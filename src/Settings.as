@@ -10,8 +10,9 @@ package  {
 	 */
 	
 	public class Settings {
-		/** тип управления */
+		/** Тип управления */
 		public static var controlType:String = ControlType.TOUCH_CONTROL;
+		/** Тип вибрации */
 		public static var vibroType:String = VibroType.VIBRO_SHORT;
 		
 	}

@@ -27,36 +27,36 @@ package elements {
 		 * Конструктор слушает добавление на сцену.
 		 * Тут stage нам нужен на случай, если произойдёт тап по кнопке и перемещение пальца в сторону от кнопки
 		 * 
-		 * @param	text текст для отображения на кнопке
+		 * @param	text Текст для отображения на кнопке
 		 */
 		public function Button(text:String) {
 			this.text = text;
 			addEventListener(Event.ADDED_TO_STAGE, addedToStage);
 		}
 		/**
-		 * @private добавляем графику и текстовое поле кнопки.
+		 * @private Добавляем графику и текстовое поле кнопки.
 		 * 
-		 * @param	e событие добавления на сцену
+		 * @param	e Событие добавления на сцену
 		 */
 		private function addedToStage(e:Event):void {
 			removeEventListener(Event.ADDED_TO_STAGE, addedToStage);
 			
-			buttonImage = Bitmaps.buttonBitmap; // добавляем битмап
+			buttonImage = Bitmaps.buttonBitmap; // Добавляем битмап
 			buttonImage.smoothing = true;
 			addChild(buttonImage);
 			
-			var textField:TextField = Tools.generateTextField(50, text); // генерируем текстовое поле...
-			textField.x = (buttonImage.width - textField.width) / 2; // ... позиционируем его и добавляем в дисплейЛист
+			var textField:TextField = Tools.generateTextField(50, text); // Генерируем текстовое поле...
+			textField.x = (buttonImage.width - textField.width) / 2; // ... позиционируем его и добавляем на экран
 			textField.y = (buttonImage.height - textField.height) / 2;
 			addChild(textField);
 			
-			this.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin); // прикосновение к кнопке
-			addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage); // слушатель удаления со stage
+			this.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin); // Прикосновение к кнопке
+			addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage); // Слушатель удаления со сцены
 		}
 		/**
 		 * @private Анимируем по альфе на половину
 		 * 
-		 * @param	e событие прикосновения пальцем к кнопке
+		 * @param	e Событие прикосновения пальцем к кнопке
 		 */
 		private function touchBegin(e:TouchEvent):void {
 			if (!activated) { // если кнопка не активирована
@@ -65,9 +65,9 @@ package elements {
 			}
 		}
 		/**
-		 * @private возвращаем альфу к единице
+		 * @private Возвращаем альфу к единице
 		 * 
-		 * @param	e событие убирания пальца от дисплея
+		 * @param	e Событие убирания пальца от дисплея
 		 */
 		private function touchEnd(e:TouchEvent):void {
 			if (!activated) { // если кнопка не активирована
@@ -84,16 +84,16 @@ package elements {
 			activated = true;
 		}
 		/**
-		 * Дективация кнопки. Приравниваем прозрачность единице
+		 * Дективация кнопки. Возвращаем прозрачность к единице
 		 */
 		public function deactivate():void {
 			buttonImage.alpha = 1;
 			activated = false;
 		}
 		/**
-		 * @private при удалении со stage убиваем более не нужные слушатели
+		 * @private При удалении со stage убиваем более не нужные слушатели
 		 * 
-		 * @param	e событие удаления со сцены
+		 * @param	e Событие удаления со сцены
 		 */
 		private function removedFromStage(e:Event):void {
 			removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);

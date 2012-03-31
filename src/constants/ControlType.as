@@ -7,9 +7,9 @@ package constants {
 	 */
 	
 	public class ControlType {
-		/** управление пальцем */
+		/** Управление пальцем */
 		public static const TOUCH_CONTROL:String = "touchControl";
-		/** управление наклоном устройства */
+		/** Управление наклоном устройства */
 		public static const SENSOR_CONTROL:String = "sensorControl";
 		
 	}

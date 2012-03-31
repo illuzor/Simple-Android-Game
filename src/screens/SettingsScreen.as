@@ -12,20 +12,23 @@ package screens {
 	import tools.Tools;
 	
 	/**
-	 * Экран настроек. Позволяет выбрать тип управления
+	 * Экран настроек. Позволяет выбрать тип управления и тип вибрации
 	 * 
 	 * @author illuzor
 	 */
 	
 	public class SettingsScreen extends Sprite {
-		/** @private кнопка-триггер для управления пальцем */
+		/** @private Кнопка-триггер для активации управления пальцем */
 		private var touchButton:Button;
-		/** @private кнопка-триггер для управления наклоном устройства */
+		/** @private Кнопка-триггер для активации управления наклоном устройства */
 		private var sensorButton:Button;
+		/** @private Кнопка-триггер для отключения вибрации */
 		private var vibroOffButton:Button;
+		/** @private Кнопка-триггер для активации короткой вибрации */
 		private var vibroShortButton:Button;
+		/** @private Кнопка-триггер для активации длинной вибрации */
 		private var vibroLongButton:Button;
-		/** кнопка save для выхода из экрана настроек и возвращения в главное меню */
+		/** Кнопка save для выхода из экрана настроек и возвращения в главное меню */
 		public var saveButton:Button;
 		/**
 		 * Слушаем добавление на сцену
@@ -36,18 +39,18 @@ package screens {
 		/**
 		 * @private Создаём графические элементы и кнопку выхода в меню
 		 * 
-		 * @param	e событие добавления на сцену
+		 * @param	e Событие добавления на сцену
 		 */
 		private function addedToStage(e:Event):void {
 			removeEventListener(Event.ADDED_TO_STAGE, addedToStage);
 			
-			// добавляем заголовок
+			// Добавляем заголовок
 			var header:TextField = Tools.generateTextField(50, "SETTINGS");
 			header.x = (stage.stageWidth - header.width) / 2;
 			header.y = 40;
 			addChild(header);
 			
-			// создаём кнопку для выхода в главное меню
+			// Создаём кнопку для выхода в главное меню
 			saveButton = new Button("SAVE");
 			addChild(saveButton);
 			saveButton.width = stage.stageWidth / 2;
@@ -55,27 +58,27 @@ package screens {
 			saveButton.x = (stage.stageWidth - saveButton.width) / 2;
 			saveButton.y = stage.stageHeight - saveButton.height - 20;
 			
-			controlSettings(); // добавляем элементы для настройки типа управления
+			controlSettings(); // Добавляем элементы для настройки типа управления
 			
-			if (Vibration.isSupported) { // если вибрация поддерживается ...
+			if (Vibration.isSupported) { // Если вибрация поддерживается ...
 				vibrationSettings(); // ... создаём элементы управления вибрацией
-			} else { // если не поддерживается, выключаем вибрацию
+			} else { // Если не поддерживается, выключаем вибрацию
 				Settings.vibroType = VibroType.VIBRO_OFF;
 			}
 			
 			addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
 		}
 		/**
-		 * @private создание элементов для настройки типа управления
+		 * @private Создание элементов для выбора типа управления
 		 */
 		private function controlSettings():void {
-			// текстовое поле для отображения текста "Control Type:"
+			// Текстовое поле для отображения текста "Control Type:"
 			var controlText:TextField = Tools.generateTextField(30, "Control Type:");
 			controlText.x = (stage.stageWidth - controlText.width) / 2;
 			controlText.y = (stage.stageHeight - controlText.height) / 3;
 			addChild(controlText);
 			
-			// далее создаём две кнопки
+			// Создаём две кнопки
 			touchButton = new Button("TOUCH");
 			addChild(touchButton);
 			touchButton.activate();
@@ -84,25 +87,25 @@ package screens {
 			touchButton.x = stage.stageWidth / 2 - touchButton.width - 10;
 			touchButton.y = controlText.y + controlText.height + 20;
 			
-			if (Accelerometer.isSupported) { // кнопку "SENSOR" создаём только если в устройстве есть акселерометр
+			if (Accelerometer.isSupported) { // Кнопку "SENSOR" создаём только если в устройстве есть акселерометр
 				sensorButton = new Button("SENSOR");
 				addChild(sensorButton);
 				sensorButton.width = stage.stageWidth / 3.2;
 				sensorButton.scaleY = sensorButton.scaleX;
 				sensorButton.x = stage.stageWidth / 2 + 10;
 				sensorButton.y = controlText.y + controlText.height + 20;
-				// если в настройках выставлен тип ControlType.SENSOR_CONTROL, активируем кнопку "SENSOR"
+				// Если в настройках выставлен тип ControlType.SENSOR_CONTROL, активируем кнопку "SENSOR"
 				if (Settings.controlType == ControlType.SENSOR_CONTROL) setSensorControl(null); 
 				touchButton.addEventListener(TouchEvent.TOUCH_TAP, setTouchControl);
 				sensorButton.addEventListener(TouchEvent.TOUCH_TAP, setSensorControl);
-			} else { // если акселерометра в устройстве нет, просто центруем кнопку "TOUCH"
+			} else { // Если акселерометра в устройстве нет, просто центруем кнопку "TOUCH"
 				touchButton.x = (stage.stageWidth - touchButton.width) / 2;
 			}
 		}
 		/**
-		 * @private задаём значение переменной в настройках, активируем/деактивируем кнопки
+		 * @private Задаём значение переменной в настройках, активируем/деактивируем кнопки
 		 * 
-		 * @param	e событие прикосновения к кнопке "TOUCH"
+		 * @param	e Событие прикосновения к кнопке "TOUCH"
 		 */
 		private function setTouchControl(e:TouchEvent):void {
 			Settings.controlType = ControlType.TOUCH_CONTROL;
@@ -110,9 +113,9 @@ package screens {
 			sensorButton.deactivate();
 		}
 		/**
-		 * @private задаём значение переменной в настройках, активируем/деактивируем кнопки
+		 * @private Задаём значение переменной в настройках, активируем/деактивируем кнопки
 		 * 
-		 * @param	e событие прикосновения к кнопке "SENSOR"
+		 * @param	e Событие прикосновения к кнопке "SENSOR"
 		 */
 		private function setSensorControl(e:TouchEvent):void {
 			Settings.controlType = ControlType.SENSOR_CONTROL;
@@ -120,19 +123,19 @@ package screens {
 			touchButton.deactivate();
 		}
 		/**
-		 * @private создание элементов для настройки типа вибрации
+		 * @private Создание элементов для выбора типа вибрации
 		 */
 		private function vibrationSettings():void {
-			// текстовое поле для отображения текста "Vibration Type:"
+			// Текстовое поле для отображения текста "Vibration Type:"
 			var vibrationTypeText:TextField = Tools.generateTextField(30, "Vibration Type:");
 			vibrationTypeText.x = (stage.stageWidth - vibrationTypeText.width) / 2;
 			vibrationTypeText.y = (stage.stageHeight - vibrationTypeText.height) / 2;
 			addChild(vibrationTypeText);
 			
-			// три кнопки-триггера. по аналогии.
+			// Три кнопки-триггера. По аналогии.
 			vibroOffButton = new Button("OFF");
 			addChild(vibroOffButton);
-			vibroOffButton.vibroType = VibroType.VIBRO_OFF; // добавляем свойство кнопке, чтобы определить, какая кнопка нажата
+			vibroOffButton.vibroType = VibroType.VIBRO_OFF; // Добавляем свойство кнопке, чтобы можно было определить, какая кнопка нажата
 			vibroOffButton.width = stage.stageWidth / 3.2;
 			vibroOffButton.scaleY = vibroOffButton.scaleX;
 			vibroOffButton.x = stage.stageWidth / 2 - vibroOffButton.width * 1.5 - 10;
@@ -155,7 +158,7 @@ package screens {
 			vibroLongButton.x = stage.stageWidth / 2 + vibroLongButton.width * .5 + 10;
 			vibroLongButton.y = vibrationTypeText.y + vibrationTypeText.height + 20;
 			
-			// на основе значения из настроект активируем нужную кнопку
+			// На основе значения из настроект активируем нужную кнопку
 			if (Settings.vibroType == VibroType.VIBRO_OFF) {
 				vibroShortButton.deactivate();
 				vibroOffButton.activate();
@@ -165,7 +168,7 @@ package screens {
 				vibroShortButton.deactivate();
 				vibroLongButton.activate();
 			}
-			// добавляем слушатель к кнопкам
+			// Добавляем слушатель к кнопкам
 			vibroOffButton.addEventListener(TouchEvent.TOUCH_TAP, changeVibroType);
 			vibroShortButton.addEventListener(TouchEvent.TOUCH_TAP, changeVibroType);
 			vibroLongButton.addEventListener(TouchEvent.TOUCH_TAP, changeVibroType);
@@ -173,7 +176,7 @@ package screens {
 		/**
 		 * @private Применяем тип вибрации в зависимости от нажатой кнопки
 		 * 
-		 * @param	e событие прикосновения к кнопке типа вибрации
+		 * @param	e Событие прикосновения к кнопке типа вибрации
 		 */
 		private function changeVibroType(e:TouchEvent):void {
 			switch (e.currentTarget.vibroType) {
@@ -197,12 +200,12 @@ package screens {
 				break;
 			}
 			
-			Settings.vibroType = e.currentTarget.vibroType; // применяем настройку типа вибрации
+			Settings.vibroType = e.currentTarget.vibroType; // Применяем настройку типа вибрации
 		}
 		/**
 		 * Удаление со сцены, отключение ненужных слушателей
 		 * 
-		 * @param	e событие удаления со сцены
+		 * @param	e Событие удаления со сцены
 		 */
 		private function removedFromStage(e:Event):void {
 			removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);

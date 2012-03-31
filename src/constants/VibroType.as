@@ -7,11 +7,11 @@ package constants {
 	 */
 	
 	public class VibroType {
-		/** вибрация выключена */
+		/** Вибрация выключена */
 		public static const VIBRO_OFF:String = "vibroOff";
-		/** короткая вибрация */
+		/** Короткая вибрация */
 		public static const VIBRO_SHORT:String = "vibroShort";
-		/** длинная вибрация */
+		/** Длинная вибрация */
 		public static const VIBRO_LONG:String = "vibroLong";
 		
 	}

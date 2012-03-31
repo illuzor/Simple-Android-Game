@@ -15,15 +15,15 @@ package screens
 	 * @author illuzor
 	 */
 	public class MainMenu extends Sprite {
-		/** @private фоновое изображение */
+		/** @private Фоновое изображение */
 		private var background:Bitmap;
-		/** кнопка "PLAY" */
+		/** Кнопка "PLAY" */
 		public var playButton:Button;
-		/** кнопка "EXIT" */
+		/** Кнопка "EXIT" */
 		public var exitButton:Button;
-		/** кнопка "SETTINGS" */
+		/** Кнопка "SETTINGS" */
 		public var settingButton:Button;
-		/** кнопка "SCORES" */
+		/** Кнопка "SCORES" */
 		public var scoresButton:Button;
 		/**
 		 * В конструкторе просто слушаем добавление на сцену
@@ -34,19 +34,19 @@ package screens
 		/**
 		 * Создаём и добавляем фон, логотип, кнопки
 		 * 
-		 * @param	e событие добавления на сцену
+		 * @param	e Событие добавления на сцену
 		 */
 		private function adddedToStage(e:Event):void {
 			removeEventListener(Event.ADDED_TO_STAGE, adddedToStage);
 			
-			// создаём битмап фона и добавляем его на сцену
+			// Создаём битмап фона и добавляем его на сцену
 			background = Bitmaps.backgroundBitmap;
 			background.smoothing = true;
 			addChild(background);
-			placeBackground(background); // позиционируем фон
+			placeBackground(background); // Позиционируем фон
 			
-			// создаём битмап логотипа, задаём размер относительно ширины сцены
-			// задаём положение и добавляем на сцену
+			// Создаём битмап логотипа, задаём размер относительно ширины сцены
+			// Задаём его положение и добавляем на сцену
 			var logo:Bitmap = Bitmaps.logoBitmap;
 			logo.smoothing = true;
 			logo.width = stage.stageWidth * .7;
@@ -55,11 +55,11 @@ package screens
 			logo.y = stage.stageHeight / 5;
 			addChild(logo);
 			
-			// контейнер для кнопок для удобного позиционирования этих кнопок
+			// Контейнер для кнопок. Нужен для удобного позиционирования этих кнопок
 			var buttonsContainer:Sprite = new Sprite();
 			addChild(buttonsContainer);
 			
-			// создание кнопок "PLAY", "SETTINGS", "EXIT", подгонка их размеров и добавление в контейнер
+			// Создание кнопок "PLAY", "SETTINGS", "EXIT", подгонка их размеров и добавление в контейнер
 			playButton = new Button("PLAY");
 			buttonsContainer.addChild(playButton);
 			playButton.width = stage.stageWidth / 2;
@@ -83,9 +83,9 @@ package screens
 			exitButton.scaleY = exitButton.scaleX;
 			exitButton.y = buttonsContainer.height + 25;
 			
-			// позиционирование контейнера с кнопками
+			// Позиционирование контейнера с кнопками
 			buttonsContainer.x = (stage.stageWidth - buttonsContainer.width) / 2;
-			// по y ровно между логотипом и нижней границей экрана
+			// По .y ровно между логотипом и нижней границей экрана
 			buttonsContainer.y = ((stage.stageHeight - logo.height - logo.y) - buttonsContainer.height) / 2 + logo.height + logo.y;
 			
 			stage.addEventListener(Event.RESIZE, resize);
@@ -94,7 +94,7 @@ package screens
 		/**
 		 * @private В Android 4 происходит неприятная фигня. После запуска приложения верхняя статусная панель не резко исчезает, а плавно уезжает вверх,
 		 * это влияет на размер сцены и сразу после запуска приложения размер сцены чуть меньше, чем размер дисплея.
-		 * Нужно слушать ресайз, чтобы подогнать фон. А на деле и все остальные элементы отображения.
+		 * Нужно слушать ресайз, чтобы подогнать фон. А по-хорошему и все остальные графические элементы тоже.
 		 * 
 		 * @param	e  событие ресайза сцены
 		 */ 
@@ -123,7 +123,7 @@ package screens
 		/**
 		 * @private При удалении со сцены убиваем ненужные слушатели
 		 * 
-		 * @param	e событие удаления со сцены.
+		 * @param	e Событие удаления со сцены
 		 */
 		private function removedFromStage(e:Event):void {
 			removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);

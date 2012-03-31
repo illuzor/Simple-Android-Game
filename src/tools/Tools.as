@@ -14,10 +14,10 @@ package tools {
 		/**
 		 * Генератор текстфилда по заданным параметрам
 		 * 
-		 * @param	size размер шрифта
-		 * @param	text текст для отображения
-		 * @param	color цвет текста
-		 * @return  настроенное текстовое поле
+		 * @param	size Размер шрифта
+		 * @param	text Текст для отображения
+		 * @param	color Цвет текста
+		 * @return  Настроенное текстовое поле
 		 */
 		public static function generateTextField(size:uint, text:String = "", color:uint = 0xFFFFFF):TextField {
 			var textFormat:TextFormat = new TextFormat();

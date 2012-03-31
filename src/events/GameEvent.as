@@ -9,9 +9,9 @@ package events {
 	 */
 	
 	public class GameEvent extends Event {
-		/** выход из игры в главное меню через кнопку menu */
+		/** Выход из игры в главное меню через кнопку menu */
 		public static const EXIT_GAME:String = "exitGame";
-		/** игра проиграна */
+		/** Игра проиграна */
 		public static const GAME_OVER:String = "gameOver";
 		
 		public function GameEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false) { 

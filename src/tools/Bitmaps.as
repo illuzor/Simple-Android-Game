@@ -9,11 +9,11 @@ package tools {
 	 */
 	
 	public class Bitmaps {
-		/** @private прикреплённый файл графики фона */
+		/** @private Прикреплённый файл графики фона */
 		[Embed(source = "../../assets/MenuBackground.jpg")] private static const BackgroundBitmap:Class;
-		/** @private прикреплённый файл графики кнопки */
+		/** @private Прикреплённый файл графики кнопки */
 		[Embed(source = "../../assets/ButtonImage.png")] private static const ButtonBitmap:Class;
-		/** @private прикреплённый файл графики логотипа */
+		/** @private Прикреплённый файл графики логотипа */
 		[Embed(source = "../../assets/GameLogo.png")] private static const LogoBitmap:Class;
 		
 		/** Битмап фона */
