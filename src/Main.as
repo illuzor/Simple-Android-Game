@@ -25,11 +25,11 @@ package {
 	 * Три типа вибрации - короткая, дилнная, вибрация выключена.
 	 * Таблица пяти полследних результатов.
 	 * 
-	 * Создано с помощью FlashDevelop 4.0.1 и Flex SDK 4.6
+	 * Создано с помощью FlashDevelop 4.0.1 и Flex SDK 4.6 + AIR SDK 3.2
 	 * С использованием библиотеки от greensock - http://www.greensock.com/v11/
 	 * 
 	 * @author illuzor
-	 * @version 0.93
+	 * @version 0.94
 	 */
 	
 	public class Main extends Sprite {
@@ -73,34 +73,53 @@ package {
 			currentScreen = ScreenType.MAIN_MENU; // Применяем тип экрана
 			menuScreen = new MainMenu(); // Создаём меню и добавляем его на сцену
 			addChild(menuScreen);
-			
-			menuScreen.playButton.addEventListener(TouchEvent.TOUCH_TAP, startGame); // Добавляем слушатели к кнопкам меню
-			menuScreen.exitButton.addEventListener(TouchEvent.TOUCH_TAP, deactivate);
-			menuScreen.settingButton.addEventListener(TouchEvent.TOUCH_TAP, showSettings);
-			menuScreen.scoresButton.addEventListener(TouchEvent.TOUCH_TAP, showLastScoresScreen);
+			// вешаем слушатель для кнопок на menuScreen
+			menuScreen.addEventListener(TouchEvent.TOUCH_TAP, onButtonTap);
 		}
 		/**
-		 * @private Показываем игровой экран
+		 * @private Показ нужного экрана в зависимости от нажатой копки
 		 * 
-		 * @param	e Событие прикосновения к кнопке playButton главного меню
+		 * @param	e Событие прикосновения к кнопке на экране menuScreen
+		 */
+		private function onButtonTap(e:TouchEvent):void {
+			switch (e.target) {
+				case menuScreen.playButton: // Показываем игровой экран
+					startGame(null);
+				break;
+				
+				case menuScreen.settingButton: // Показ экрана настроек после нажатия на кнопку "SETTINGS"
+					clear(); // Очищаем
+					currentScreen = ScreenType.SETTINGS_SCREEN; // Применяем тип экрана
+					settingsScreen = new SettingsScreen(); // Создаём и показываем экран настроек после нажатия на кнопку "PLAY"
+					addChild(settingsScreen);
+					settingsScreen.saveButton.addEventListener(TouchEvent.TOUCH_TAP, saveSettings);
+				break;
+				
+				case menuScreen.scoresButton: // Показ экрана с последними рзультатами после нажатия на кнопку "SCORE"
+					clear(); // Очищаем
+					currentScreen = ScreenType.LAST_SCORES_SCREEN; // Применяем тип экрана
+					lastScoreScreen = new LastScoresScreen(); // Создаём экран и добавленяем на сцену
+					addChild(lastScoreScreen);
+					lastScoreScreen.backButton.addEventListener(TouchEvent.TOUCH_TAP, exitLastScores);
+				break;
+				
+				case menuScreen.exitButton: // Выход из приложения при нажатии кнопки "EXIT"
+					deactivate(null);
+				break;
+			}
+		}
+		/**
+		 * Запуск игрового процесса - показ экрана gameScreen
+		 * 
+		 * @param	e событие прикосновения к кнопке
 		 */
 		private function startGame(e:TouchEvent):void {
 			clear(); // Очищаем
 			currentScreen = ScreenType.GAME_SCREEN; // Применяем тип экрана
-			
 			gameScreen = new GameScreen(); // Создаём игровой экран и добавляем на сцену
 			addChild(gameScreen);
 			gameScreen.addEventListener(GameEvent.EXIT_GAME, exitGame); // Слушатель События выхода из игры по кнопке
 			gameScreen.addEventListener(GameEvent.GAME_OVER, gameOver); // Слушатель События проигрыша
-		}
-		/**
-		 * @private Выход из игры по нажатию кнопки
-		 * 
-		 * @param	e Событие выхода из игры
-		 */
-		private function exitGame(e:GameEvent):void {
-			clear(); // Очищаем
-			showMenu(); // Показываем главное меню
 		}
 		/**
 		 * @private Игра проиграна, показ результата
@@ -118,27 +137,6 @@ package {
 			scoreScreen.againButton.addEventListener(TouchEvent.TOUCH_TAP, startGame); 
 		}
 		/**
-		 * @private Выход из экрана результатов по кнопке.
-		 * Нужно сделать то же самое, что и при нажатии кнопки выхода из игры, поэтому просто вызываем exitGame()
-		 * 
-		 * @param	e Событие прикосновения к кнопке выхода из экрана результатов
-		 */
-		private function exitScore(e:TouchEvent):void {
-			exitGame(null);
-		}
-		/**
-		 * @private Показ экрана настроек после нажатия на кнопку "SETTINGS"
-		 * 
-		 * @param	e Событие прикосновения к кнопке "SETTINGS"
-		 */
-		private function showSettings(e:TouchEvent):void {
-			clear(); // Очищаем
-			currentScreen = ScreenType.SETTINGS_SCREEN; // Применяем тип экрана
-			settingsScreen = new SettingsScreen(); // Создаём и показываем экран настроек
-			addChild(settingsScreen);
-			settingsScreen.saveButton.addEventListener(TouchEvent.TOUCH_TAP, saveSettings);
-		}
-		/**
 		 * @private Выход из экрана настроек по нажитию на кнопку "SAVE"
 		 * Нужно сделать то же самое, что и при нажатии кнопки выхода из игры, поэтому просто вызываем exitGame()
 		 * 
@@ -151,16 +149,22 @@ package {
 			exitGame(null);
 		}
 		/**
-		 * @private Показ экрана с последними рзультатами
+		 * @private Выход из игры по нажатию кнопки
 		 * 
-		 * @param	e Событие прикосновения к кнопке menuScreen.scoresButton
+		 * @param	e Событие выхода из игры
 		 */
-		private function showLastScoresScreen(e:TouchEvent):void {
+		private function exitGame(e:GameEvent):void {
 			clear(); // Очищаем
-			currentScreen = ScreenType.LAST_SCORES_SCREEN; // Применяем тип экрана
-			lastScoreScreen = new LastScoresScreen(); // Создаём экран и добавленяем на сцену
-			addChild(lastScoreScreen);
-			lastScoreScreen.backButton.addEventListener(TouchEvent.TOUCH_TAP, exitLastScores);
+			showMenu(); // Показываем главное меню
+		}
+		/**
+		 * @private Выход из экрана результатов по кнопке.
+		 * Нужно сделать то же самое, что и при нажатии кнопки выхода из игры, поэтому просто вызываем exitGame()
+		 * 
+		 * @param	e Событие прикосновения к кнопке выхода из экрана результатов
+		 */
+		private function exitScore(e:TouchEvent):void {
+			exitGame(null);
 		}
 		/**
 		 * @private Выход из экрана с последними результатами
@@ -178,10 +182,7 @@ package {
 		private function clear():void {
 			switch (currentScreen) {
 				case ScreenType.MAIN_MENU:
-					menuScreen.playButton.removeEventListener(TouchEvent.TOUCH_TAP, startGame);
-					menuScreen.exitButton.removeEventListener(TouchEvent.TOUCH_TAP, deactivate);
-					menuScreen.settingButton.removeEventListener(TouchEvent.TOUCH_TAP, showSettings);
-					menuScreen.scoresButton.removeEventListener(TouchEvent.TOUCH_TAP, showLastScoresScreen);
+					menuScreen.removeEventListener(TouchEvent.TOUCH_TAP, onButtonTap);
 					removeChild(menuScreen);
 					menuScreen = null;
 				break;

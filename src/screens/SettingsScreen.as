@@ -58,10 +58,10 @@ package screens {
 			saveButton.x = (stage.stageWidth - saveButton.width) / 2;
 			saveButton.y = stage.stageHeight - saveButton.height - 20;
 			
-			controlSettings(); // Добавляем элементы для настройки типа управления
+			initControlSettings(); // Добавляем элементы для настройки типа управления
 			
 			if (Vibration.isSupported) { // Если вибрация поддерживается ...
-				vibrationSettings(); // ... создаём элементы управления вибрацией
+				initVibroSettings(); // ... создаём элементы управления вибрацией
 			} else { // Если не поддерживается, выключаем вибрацию
 				Settings.vibroType = VibroType.VIBRO_OFF;
 			}
@@ -71,7 +71,7 @@ package screens {
 		/**
 		 * @private Создание элементов для выбора типа управления
 		 */
-		private function controlSettings():void {
+		private function initControlSettings():void {
 			// Текстовое поле для отображения текста "Control Type:"
 			var controlText:TextField = Tools.generateTextField(30, "Control Type:");
 			controlText.x = (stage.stageWidth - controlText.width) / 2;
@@ -95,37 +95,40 @@ package screens {
 				sensorButton.x = stage.stageWidth / 2 + 10;
 				sensorButton.y = controlText.y + controlText.height + 20;
 				// Если в настройках выставлен тип ControlType.SENSOR_CONTROL, активируем кнопку "SENSOR"
-				if (Settings.controlType == ControlType.SENSOR_CONTROL) setSensorControl(null); 
-				touchButton.addEventListener(TouchEvent.TOUCH_TAP, setTouchControl);
-				sensorButton.addEventListener(TouchEvent.TOUCH_TAP, setSensorControl);
+				if (Settings.controlType == ControlType.SENSOR_CONTROL) {
+					touchButton.deactivate();
+					sensorButton.activate();
+				}
+				
+				touchButton.controlType = ControlType.TOUCH_CONTROL;
+				sensorButton.controlType = ControlType.SENSOR_CONTROL;
+				touchButton.addEventListener(TouchEvent.TOUCH_TAP, setControlType);
+				sensorButton.addEventListener(TouchEvent.TOUCH_TAP, setControlType);
 			} else { // Если акселерометра в устройстве нет, просто центруем кнопку "TOUCH"
 				touchButton.x = (stage.stageWidth - touchButton.width) / 2;
 			}
 		}
+		
 		/**
 		 * @private Задаём значение переменной в настройках, активируем/деактивируем кнопки
 		 * 
-		 * @param	e Событие прикосновения к кнопке "TOUCH"
+		 * @param	e Событие прикосновения к одной из кнопок управления(TOUCH или SENSOR)
 		 */
-		private function setTouchControl(e:TouchEvent):void {
-			Settings.controlType = ControlType.TOUCH_CONTROL;
-			touchButton.activate();
-			sensorButton.deactivate();
+		private function setControlType(e:TouchEvent):void {
+			if (e.currentTarget.controlType == ControlType.TOUCH_CONTROL) {
+				touchButton.activate();
+				sensorButton.deactivate();
+			} else {
+				touchButton.deactivate();
+				sensorButton.activate();
+			}
+			Settings.controlType = e.currentTarget.controlType;
 		}
-		/**
-		 * @private Задаём значение переменной в настройках, активируем/деактивируем кнопки
-		 * 
-		 * @param	e Событие прикосновения к кнопке "SENSOR"
-		 */
-		private function setSensorControl(e:TouchEvent):void {
-			Settings.controlType = ControlType.SENSOR_CONTROL;
-			sensorButton.activate();
-			touchButton.deactivate();
-		}
+		
 		/**
 		 * @private Создание элементов для выбора типа вибрации
 		 */
-		private function vibrationSettings():void {
+		private function initVibroSettings():void {
 			// Текстовое поле для отображения текста "Vibration Type:"
 			var vibrationTypeText:TextField = Tools.generateTextField(30, "Vibration Type:");
 			vibrationTypeText.x = (stage.stageWidth - vibrationTypeText.width) / 2;
@@ -169,16 +172,16 @@ package screens {
 				vibroLongButton.activate();
 			}
 			// Добавляем слушатель к кнопкам
-			vibroOffButton.addEventListener(TouchEvent.TOUCH_TAP, changeVibroType);
-			vibroShortButton.addEventListener(TouchEvent.TOUCH_TAP, changeVibroType);
-			vibroLongButton.addEventListener(TouchEvent.TOUCH_TAP, changeVibroType);
+			vibroOffButton.addEventListener(TouchEvent.TOUCH_TAP, setVibroType);
+			vibroShortButton.addEventListener(TouchEvent.TOUCH_TAP, setVibroType);
+			vibroLongButton.addEventListener(TouchEvent.TOUCH_TAP, setVibroType);
 		}
 		/**
 		 * @private Применяем тип вибрации в зависимости от нажатой кнопки
 		 * 
 		 * @param	e Событие прикосновения к кнопке типа вибрации
 		 */
-		private function changeVibroType(e:TouchEvent):void {
+		private function setVibroType(e:TouchEvent):void {
 			switch (e.currentTarget.vibroType) {
 				
 				case VibroType.VIBRO_OFF:
@@ -209,11 +212,11 @@ package screens {
 		 */
 		private function removedFromStage(e:Event):void {
 			removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
-			touchButton.removeEventListener(TouchEvent.TOUCH_TAP, setTouchControl);
-			sensorButton.removeEventListener(TouchEvent.TOUCH_TAP, setSensorControl);
-			vibroOffButton.removeEventListener(TouchEvent.TOUCH_TAP, changeVibroType);
-			vibroShortButton.removeEventListener(TouchEvent.TOUCH_TAP, changeVibroType);
-			vibroLongButton.removeEventListener(TouchEvent.TOUCH_TAP, changeVibroType);
+			touchButton.removeEventListener(TouchEvent.TOUCH_TAP, setControlType);
+			sensorButton.removeEventListener(TouchEvent.TOUCH_TAP, setControlType);
+			vibroOffButton.removeEventListener(TouchEvent.TOUCH_TAP, setVibroType);
+			vibroShortButton.removeEventListener(TouchEvent.TOUCH_TAP, setVibroType);
+			vibroLongButton.removeEventListener(TouchEvent.TOUCH_TAP, setVibroType);
 		}
 		
 	}

@@ -46,6 +46,7 @@ package elements {
 			addChild(buttonImage);
 			
 			var textField:TextField = Tools.generateTextField(50, text); // Генерируем текстовое поле...
+			textField.mouseEnabled = false;
 			textField.x = (buttonImage.width - textField.width) / 2; // ... позиционируем его и добавляем на экран
 			textField.y = (buttonImage.height - textField.height) / 2;
 			addChild(textField);
