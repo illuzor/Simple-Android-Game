@@ -10,7 +10,7 @@ package screens
 	
 	/**
 	 * Класс главного меню игры.
-	 * Тут отображется фон, логотип и две кнопки.
+	 * Тут отображется фон, логотип и четыре кнопки.
 	 *
 	 * @author illuzor
 	 */
@@ -59,7 +59,7 @@ package screens
 			var buttonsContainer:Sprite = new Sprite();
 			addChild(buttonsContainer);
 			
-			// Создание кнопок "PLAY", "SETTINGS", "EXIT", подгонка их размеров и добавление в контейнер
+			// Создание кнопок "PLAY", "SETTINGS", "SCORES", "EXIT", подгонка их размеров и добавление в контейнер
 			playButton = new Button("PLAY");
 			buttonsContainer.addChild(playButton);
 			playButton.width = stage.stageWidth / 2;

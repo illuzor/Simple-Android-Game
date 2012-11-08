@@ -19,17 +19,17 @@ package {
 	
 	/**
 	 * Основной класс игры. Управляет отображением разных экранов игры.
-	 * Игра представляет из себя следующее: внизу экрана находится "платформа", которую можно передвигать.
-	 * Сверху падают "предметы" трёх типов: красный, зелёный, синий. Нужно ловить их платформой.
+	 * Игра представляет из себя следующее: внизу экрана находится "платформа", которую можно передвигать горизонтально.
+	 * Сверху падают "предметы" трёх типов: красный, зелёный, синий. Нужно ловить зелёные и синие, а красные избегать.
 	 * Два типа управления: пальцем и акселерометром.
-	 * Три типа вибрации - короткая, дилнная, вибрация выключена.
-	 * Таблица пяти полследних результатов.
+	 * Три типа вибрации - короткая, длинная, вибрация выключена.
+	 * Таблица пяти последних результатов.
 	 * 
-	 * Создано с помощью FlashDevelop 4.0.1 и Flex SDK 4.6 + AIR SDK 3.2
+	 * Создано с помощью FlashDevelop 4.0.1 и Flex SDK 4.6 + AIR SDK 3.5
 	 * С использованием библиотеки от greensock - http://www.greensock.com/v11/
 	 * 
 	 * @author illuzor
-	 * @version 0.94
+	 * @version 0.95
 	 */
 	
 	public class Main extends Sprite {
@@ -67,7 +67,7 @@ package {
 			showMenu(); // Показываем главное меню.
 		}
 		/**
-		 * @private Показ главное меню
+		 * @private Показ главного меню
 		 */
 		private function showMenu():void {
 			currentScreen = ScreenType.MAIN_MENU; // Применяем тип экрана
@@ -84,7 +84,8 @@ package {
 		private function onButtonTap(e:TouchEvent):void {
 			switch (e.target) {
 				case menuScreen.playButton: // Показываем игровой экран
-					startGame(null);
+					clear(); // Очищаем
+					startGame();
 				break;
 				
 				case menuScreen.settingButton: // Показ экрана настроек после нажатия на кнопку "SETTINGS"
@@ -98,13 +99,13 @@ package {
 				case menuScreen.scoresButton: // Показ экрана с последними рзультатами после нажатия на кнопку "SCORE"
 					clear(); // Очищаем
 					currentScreen = ScreenType.LAST_SCORES_SCREEN; // Применяем тип экрана
-					lastScoreScreen = new LastScoresScreen(); // Создаём экран и добавленяем на сцену
+					lastScoreScreen = new LastScoresScreen(); // Создаём экран списка последних результатов и добавленяем на сцену
 					addChild(lastScoreScreen);
 					lastScoreScreen.backButton.addEventListener(TouchEvent.TOUCH_TAP, exitLastScores);
 				break;
 				
 				case menuScreen.exitButton: // Выход из приложения при нажатии кнопки "EXIT"
-					deactivate(null);
+					deactivate();
 				break;
 			}
 		}
@@ -113,13 +114,12 @@ package {
 		 * 
 		 * @param	e событие прикосновения к кнопке
 		 */
-		private function startGame(e:TouchEvent):void {
-			clear(); // Очищаем
+		private function startGame(e:TouchEvent = null):void {
 			currentScreen = ScreenType.GAME_SCREEN; // Применяем тип экрана
 			gameScreen = new GameScreen(); // Создаём игровой экран и добавляем на сцену
 			addChild(gameScreen);
-			gameScreen.addEventListener(GameEvent.EXIT_GAME, exitGame); // Слушатель События выхода из игры по кнопке
-			gameScreen.addEventListener(GameEvent.GAME_OVER, gameOver); // Слушатель События проигрыша
+			gameScreen.addEventListener(GameEvent.EXIT_GAME, exitGame); // Слушатель события выхода из игрового экрана по кнопке
+			gameScreen.addEventListener(GameEvent.GAME_OVER, gameOver); // Слушатель события проигрыша
 		}
 		/**
 		 * @private Игра проиграна, показ результата
@@ -138,7 +138,7 @@ package {
 		}
 		/**
 		 * @private Выход из экрана настроек по нажитию на кнопку "SAVE"
-		 * Нужно сделать то же самое, что и при нажатии кнопки выхода из игры, поэтому просто вызываем exitGame()
+		 * Нужно сделать то же самое, что и при нажатии кнопки выхода из игрового экрана, поэтому просто вызываем exitGame() и применяем настройки
 		 * 
 		 * @param	e Прикосновение к кнопке "SAVE" экрана настроек
 		 */
@@ -146,34 +146,34 @@ package {
 			// Отдаём значения типа управления и типа вибрации в StorageManager
 			StorageManager.controlType = Settings.controlType;
 			StorageManager.vibroType = Settings.vibroType;
-			exitGame(null);
+			exitGame();
 		}
 		/**
-		 * @private Выход из игры по нажатию кнопки
+		 * @private Выход из игрового экрана по нажатию кнопки
 		 * 
 		 * @param	e Событие выхода из игры
 		 */
-		private function exitGame(e:GameEvent):void {
+		private function exitGame(e:GameEvent = null):void {
 			clear(); // Очищаем
 			showMenu(); // Показываем главное меню
 		}
 		/**
 		 * @private Выход из экрана результатов по кнопке.
-		 * Нужно сделать то же самое, что и при нажатии кнопки выхода из игры, поэтому просто вызываем exitGame()
+		 * Нужно сделать то же самое, что и при нажатии кнопки выхода из игрового экрана, поэтому просто вызываем exitGame()
 		 * 
 		 * @param	e Событие прикосновения к кнопке выхода из экрана результатов
 		 */
 		private function exitScore(e:TouchEvent):void {
-			exitGame(null);
+			exitGame();
 		}
 		/**
 		 * @private Выход из экрана с последними результатами
-		 * Нужно сделать то же самое, что и при нажатии кнопки выхода из игры, поэтому просто вызываем exitGame()
+		 * Нужно сделать то же самое, что и при нажатии кнопки выхода из игрового экрана, поэтому просто вызываем exitGame()
 		 * 
 		 * @param	e Событие прикосновения к кнопке lastScoreScreen.backButton
 		 */
 		private function exitLastScores(e:TouchEvent):void {
-			exitGame(null);
+			exitGame();
 		}
 		/**
 		 * @private Очистка от ненужных слушателей и экранных объектов
@@ -220,7 +220,7 @@ package {
 		 * 
 		 * @param	e Событие деактивации приложения
 		 */
-		private function deactivate(e:Event):void {
+		private function deactivate(e:Event = null):void {
 			NativeApplication.nativeApplication.exit();
 		}
 		

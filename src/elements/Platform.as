@@ -14,7 +14,6 @@ package elements {
 	public class Platform extends Shape {
 		
 		public function Platform() {
-			this.graphics.clear();
 			this.graphics.beginFill(0xFFFFFF);
 			this.graphics.drawRect(0, 0, 110, 24);
 			this.graphics.endFill();

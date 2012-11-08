@@ -14,9 +14,9 @@ package tools {
 	 */
 	
 	public class StorageManager {
-		/** @private Объект файла для чтения/сохранения */
+		/** @private Файл для чтения/сохранения */
 		static private var settingsFile:File;
-		/** @private xml объект с данными (а именно с типом управления, типом вибрации и последними результатами) */
+		/** @private xml с данными (а именно с типом управления, типом вибрации и последними результатами) */
 		static private var settingXML:XML;
 		/** @private Массив с результатами игры (с количеством набранных очков) */
 		static private var scoresList:Vector.<uint> = new Vector.<uint>();
@@ -52,7 +52,7 @@ package tools {
 		private static function readFile():XML {
 			var xml:XML; // Временный xml
 			var stream:FileStream = new FileStream(); // Поток для считывания
-			stream.open(settingsFile, FileMode.READ); // Открываем объект файла на чтение
+			stream.open(settingsFile, FileMode.READ); // Открываем поток на чтение
 			xml = XML(stream.readUTFBytes(stream.bytesAvailable)); // Создаём xml на основе считанного файла
 			stream.close(); // Закрываем поток
 			stream = null;
@@ -63,7 +63,7 @@ package tools {
 		 */
 		private static function writeFile():void {
 			var stream:FileStream = new FileStream(); // Поток для записи
-			stream.open(settingsFile, FileMode.WRITE); // Открываем объект файла на запись
+			stream.open(settingsFile, FileMode.WRITE); // Открываем поток на запись
 			stream.writeUTFBytes(settingXML.toXMLString()); // Записываем файл
 			stream.close(); // Закрываем поток
 			stream = null;
@@ -94,17 +94,16 @@ package tools {
 		public static function get vibroType():String {
 			return settingXML.vibroType; // Возвращает тип управления из xml
 		}
-		
 		/**
 		 * Сеттер для добавления нового результата
-		 * Используется в главном классе , когда игра проиграна(получено событие проигрыша от игрового экрана)
+		 * Используется в главном классе, когда игра проиграна(получено событие проигрыша от игрового экрана)
 		 */
 		public static function set newScore(value:uint):void {
 			scoresList.unshift(value); // Добавляем полученный результат в начало массива
 			updateScores(); // Запуск функции обновления списка результатов в xml
 		}
 		/**
-		 * Геттер возвращает 5(или меньше) последних результатов в виде массива
+		 * Геттер возвращает 5(или меньше) последних результатов в виде вектора
 		 * на основе xml с данными. Используется в LastScoresScreen для получения списка результатов.
 		 */
 		public static function get lastScores():Vector.<uint> {

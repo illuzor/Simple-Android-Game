@@ -208,10 +208,10 @@ package screens {
 				}
 			}
 			scoreText.text = "SCORE: " + currentScore; // Обновляем текстовое поле с очками
-			if (maxScore < currentScore) maxScore = currentScore; // Записываем максимальное количество очков, если текущее количество больше максимального
-			if (currentScore < -5) { // Если количество очков меньше, чем -5..
-				dispatchEvent(new GameEvent(GameEvent.GAME_OVER)); //...  генерируем событие проигрыша
-			}
+			// Записываем максимальное количество очков, если текущее количество больше максимального
+			if (maxScore < currentScore) maxScore = currentScore; 
+			// Если количество очков меньше, чем -5, генерируем событие проигрыша
+			if (currentScore < -5) dispatchEvent(new GameEvent(GameEvent.GAME_OVER));
 		}
 		/**
 		 * @private Генерируем событие выхода из игры

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<application xmlns="http://ns.adobe.com/air/application/3.2">
+<application xmlns="http://ns.adobe.com/air/application/3.5">
   <id>air.AndroinSimpleGame</id>
-  <versionNumber>0.94</versionNumber>
+  <versionNumber>0.95</versionNumber>
   <supportedProfiles>mobileDevice</supportedProfiles>
   <filename>AndroinSimpleGame</filename>
   <name>AndroinSimpleGame</name>
@@ -48,7 +48,7 @@
     <image512x512>icons/icon_512.png</image512x512>
   </icon>
   <copyright>illuzor</copyright>
-  <versionLabel>0.94</versionLabel>
+  <versionLabel>0.95</versionLabel>
   <description>Simple demo game created with AS3 AIR</description>
   <extensions>
     <extensionID>com.adobe.Vibration</extensionID>

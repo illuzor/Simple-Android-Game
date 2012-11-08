@@ -138,7 +138,7 @@ package screens {
 			// Три кнопки-триггера. По аналогии.
 			vibroOffButton = new Button("OFF");
 			addChild(vibroOffButton);
-			vibroOffButton.vibroType = VibroType.VIBRO_OFF; // Добавляем свойство кнопке, чтобы можно было определить, какая кнопка нажата
+			vibroOffButton.vibroType = VibroType.VIBRO_OFF; // Добавляем свойство кнопке, чтобы можно было определить значение настройки вибрации
 			vibroOffButton.width = stage.stageWidth / 3.2;
 			vibroOffButton.scaleY = vibroOffButton.scaleX;
 			vibroOffButton.x = stage.stageWidth / 2 - vibroOffButton.width * 1.5 - 10;
@@ -182,27 +182,25 @@ package screens {
 		 * @param	e Событие прикосновения к кнопке типа вибрации
 		 */
 		private function setVibroType(e:TouchEvent):void {
-			switch (e.currentTarget.vibroType) {
-				
-				case VibroType.VIBRO_OFF:
+			switch (e.currentTarget) {
+				case vibroOffButton:
 					vibroOffButton.activate();
 					vibroShortButton.deactivate();
 					vibroLongButton.deactivate();
 				break;
 				
-				case VibroType.VIBRO_SHORT:
+				case vibroShortButton:
 					vibroOffButton.deactivate();
 					vibroShortButton.activate();
 					vibroLongButton.deactivate();
 				break;
 				
-				case VibroType.VIBRO_LONG:
+				case vibroLongButton:
 					vibroOffButton.deactivate();
 					vibroShortButton.deactivate();
 					vibroLongButton.activate();
 				break;
 			}
-			
 			Settings.vibroType = e.currentTarget.vibroType; // Применяем настройку типа вибрации
 		}
 		/**
